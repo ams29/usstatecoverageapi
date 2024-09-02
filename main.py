@@ -26,15 +26,16 @@ def get_us_state_coverage(carriers):
     }}
     """
 
-    response = openai.chat.completion.create(
+    response = openai.chat.completions.create(
         model="gpt-4o-mini",
+        response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": "You are a helpful assistant that generates realistic shipping carrier data."},
             {"role": "user", "content": prompt}
         ]
     )
 
-    return json.loads(response.choices[0].message['content'])
+    return json.loads(response.choices[0].message.content)
 
 @app.post("/state-coverage-comparison/")
 async def state_coverage_comparison(request: StateCoverageRequest):
